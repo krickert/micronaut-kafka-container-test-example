@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 @MicronautTest
 @TestInstance(PER_CLASS)
-public class KafkaContainerTestCommandTest {
+public class KafkaAvroContainerTestCommandTest {
     private static final ConcurrentLinkedQueue<DemoDocument> messages = new ConcurrentLinkedQueue<>();
 
     @Inject
@@ -52,7 +52,7 @@ public class KafkaContainerTestCommandTest {
 
         try (ApplicationContext ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)) {
             String[] args = new String[] { "-v" };
-            PicocliRunner.run(KafkaContainerTestCommand.class, ctx, args);
+            PicocliRunner.run(KafkaAvroContainerTestCommand.class, ctx, args);
             // kafka-container-test
             assertTrue(baos.toString().contains("Hi!"));
             await().atMost(10, SECONDS).until(() -> !messages.isEmpty());

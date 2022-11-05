@@ -1,2 +1,6 @@
 kafka:
   schema.registry.url: mock://localhost:8081
+  schema:
+    canonicalize:
+      on:
+        consume: AVRO
