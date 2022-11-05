@@ -10,5 +10,6 @@
   <modules>
     <module>kafka-container-test</module>
     <module>kafka-avro-container-test</module>
+    <module>kafka-protobuf-container-test</module>
   </modules>
 </project>

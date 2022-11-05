@@ -1,6 +1,8 @@
 package kafka.container.test;
 
-import com.krickert.avro.model.DemoDocument;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
+import com.krickert.search.model.DemoDocument;
 import io.micronaut.configuration.kafka.annotation.KafkaListener;
 import io.micronaut.configuration.kafka.annotation.Topic;
 import io.micronaut.configuration.picocli.PicocliRunner;
@@ -33,6 +35,7 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 public class KafkaContainerTestCommandTest {
     private static final ConcurrentLinkedQueue<DemoDocument> messages = new ConcurrentLinkedQueue<>();
 
+
     @Inject
     public SampleKafkaProducer producer;
 
@@ -40,7 +43,7 @@ public class KafkaContainerTestCommandTest {
             .setBody("This is a body.")
             .setId("Identifer")
             .setTitle("Title: Sample Titles for Sample Demos")
-            .setCustom(Map.of(
+            .putAllCustom(Map.of(
                     "a", "b",
                     "c", "d"
             )).build();
@@ -57,8 +60,6 @@ public class KafkaContainerTestCommandTest {
             assertTrue(baos.toString().contains("Hi!"));
             await().atMost(10, SECONDS).until(() -> !messages.isEmpty());
             assertThat(messages.iterator().next()).isEqualTo(expected);
-
-
         }
     }
 
@@ -73,22 +74,26 @@ public class KafkaContainerTestCommandTest {
                 .setBody("This is a body.")
                 .setId("Identifer")
                 .setTitle("Title: Sample Titles for Sample Demos")
-                .setCustom(Map.of(
+                .putAllCustom(Map.of(
                         "a", "b",
                         "c", "d"
                 )).build();
         producer.sendMessage(sendMe);
         await().atMost(10, SECONDS).until(() -> !messages.isEmpty());
         assertEquals(1, messages.size());
-        DemoDocument result = messages.poll();
+        Message result = messages.poll();
         assertEquals(expected, result);
     }
 
     @KafkaListener
     static class SampleListener {
-        @Topic("sample-topic-avro")
-        public void getTopic(DemoDocument message) {
-            messages.add(message);
+        @Topic("sample-topic-proto")
+        public void getTopic(Message message) {
+            try {
+                messages.add(DemoDocument.parseFrom(message.toByteArray()));
+            } catch (InvalidProtocolBufferException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

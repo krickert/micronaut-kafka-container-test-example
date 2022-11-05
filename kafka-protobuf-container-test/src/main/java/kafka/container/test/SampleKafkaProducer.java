@@ -1,14 +1,13 @@
 package kafka.container.test;
-import com.krickert.avro.model.DemoDocument;
+import com.krickert.search.model.DemoDocument;
 import io.micronaut.configuration.kafka.annotation.KafkaClient;
 import io.micronaut.configuration.kafka.annotation.Topic;
-import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.env.Environment;
+
 
 @KafkaClient
 public interface SampleKafkaProducer {
 
-    @Topic("sample-topic-avro")
+    @Topic("sample-topic-proto")
     void sendMessage(DemoDocument testString);
 
 }

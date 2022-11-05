@@ -1,6 +1,6 @@
 package kafka.container.test;
 
-import com.krickert.avro.model.DemoDocument;
+import com.krickert.search.model.DemoDocument;
 import io.micronaut.configuration.picocli.PicocliRunner;
 
 import jakarta.inject.Inject;
@@ -9,7 +9,7 @@ import picocli.CommandLine.Option;
 
 import java.util.Map;
 
-@Command(name = "kafka-avro-container-test", description = "...",
+@Command(name = "kafka-protobuf-container-test", description = "...",
         mixinStandardHelpOptions = true)
 public class KafkaContainerTestCommand implements Runnable {
 
@@ -28,7 +28,7 @@ public class KafkaContainerTestCommand implements Runnable {
                 .setBody("This is a body.")
                 .setId("Identifer")
                 .setTitle("Title: Sample Titles for Sample Demos")
-                .setCustom(Map.of(
+                .putAllCustom(Map.of(
                         "a", "b",
                         "c", "d"
                 )).build());

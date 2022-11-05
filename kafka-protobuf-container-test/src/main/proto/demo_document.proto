@@ -1,0 +1,12 @@
+syntax = "proto3";
+package com.krickert.search.model;
+option java_multiple_files = true;
+
+message DemoDocument {
+  string id = 1;
+  string title = 2;
+  optional string body = 3;
+  map<string, string> custom = 4;
+}
+
+

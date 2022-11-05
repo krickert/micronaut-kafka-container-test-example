@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>kafka.container.test</groupId>
-  <artifactId>kafka-avro-container-test</artifactId>
+  <artifactId>kafka-protobuf-container-test</artifactId>
   <version>0.1</version>
   <packaging>${packaging}</packaging>
 
@@ -132,21 +132,16 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
     <dependency>
-      <groupId>org.apache.avro</groupId>
-      <artifactId>avro</artifactId>
-      <version>1.11.1</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>3.21.9</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/io.confluent/kafka-streams-avro-serde -->
+    <!-- https://mvnrepository.com/artifact/io.confluent/kafka-streams-protobuf-serde -->
     <dependency>
       <groupId>io.confluent</groupId>
-      <artifactId>kafka-streams-avro-serde</artifactId>
+      <artifactId>kafka-streams-protobuf-serde</artifactId>
       <version>7.2.2</version>
     </dependency>
   </dependencies>
@@ -154,22 +149,18 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.avro</groupId>
-        <artifactId>avro-maven-plugin</artifactId>
-        <version>1.11.1</version>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <version>0.6.1</version>
+        <configuration>
+          <protocExecutable>/opt/homebrew/bin/protoc</protocExecutable>
+        </configuration>
         <executions>
           <execution>
-            <phase>generate-sources</phase>
             <goals>
-              <goal>schema</goal>
+              <goal>compile</goal>
+              <goal>test-compile</goal>
             </goals>
-            <configuration>
-              <imports>
-                <import>${project.basedir}/src/main/avro/simple.avsc</import>
-              </imports>
-              <sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
-              <stringType>String</stringType>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -207,7 +198,7 @@
           </annotationProcessorPaths>
           <compilerArgs>
             <arg>-Amicronaut.processing.group=kafka.container.test</arg>
-            <arg>-Amicronaut.processing.module=kafka-avro-container-test</arg>
+            <arg>-Amicronaut.processing.module=kafka-protobuf-container-test</arg>
           </compilerArgs>
         </configuration>
       </plugin>
