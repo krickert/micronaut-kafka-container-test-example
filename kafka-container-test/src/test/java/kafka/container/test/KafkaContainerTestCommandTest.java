@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -49,7 +50,7 @@ public class KafkaContainerTestCommandTest {
         }
     }
 
-    @BeforeAll
+    @BeforeEach
     public void before() {
         messages.clear();
     }
