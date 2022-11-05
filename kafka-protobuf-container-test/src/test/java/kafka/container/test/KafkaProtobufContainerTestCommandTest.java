@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 @MicronautTest
 @TestInstance(PER_CLASS)
-public class KafkaContainerTestCommandTest {
+public class KafkaProtobufContainerTestCommandTest {
     private static final ConcurrentLinkedQueue<DemoDocument> messages = new ConcurrentLinkedQueue<>();
 
 
@@ -55,7 +55,7 @@ public class KafkaContainerTestCommandTest {
 
         try (ApplicationContext ctx = ApplicationContext.run(Environment.CLI, Environment.TEST)) {
             String[] args = new String[] { "-v" };
-            PicocliRunner.run(KafkaContainerTestCommand.class, ctx, args);
+            PicocliRunner.run(KafkaProtobufContainerTestCommand.class, ctx, args);
             // kafka-container-test
             assertTrue(baos.toString().contains("Hi!"));
             await().atMost(10, SECONDS).until(() -> !messages.isEmpty());
@@ -88,12 +88,8 @@ public class KafkaContainerTestCommandTest {
     @KafkaListener
     static class SampleListener {
         @Topic("sample-topic-proto")
-        public void getTopic(Message message) {
-            try {
-                messages.add(DemoDocument.parseFrom(message.toByteArray()));
-            } catch (InvalidProtocolBufferException e) {
-                throw new RuntimeException(e);
-            }
+        public void getTopic(DemoDocument message) {
+           messages.add(message);
         }
     }
 

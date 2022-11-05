@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Command(name = "kafka-protobuf-container-test", description = "...",
         mixinStandardHelpOptions = true)
-public class KafkaContainerTestCommand implements Runnable {
+public class KafkaProtobufContainerTestCommand implements Runnable {
 
     @Option(names = {"-v", "--verbose"}, description = "...")
     boolean verbose;
@@ -20,7 +20,7 @@ public class KafkaContainerTestCommand implements Runnable {
     SampleKafkaProducer producer;
 
     public static void main(String[] args) throws Exception {
-        PicocliRunner.run(KafkaContainerTestCommand.class, args);
+        PicocliRunner.run(KafkaProtobufContainerTestCommand.class, args);
     }
 
     public void run() {
