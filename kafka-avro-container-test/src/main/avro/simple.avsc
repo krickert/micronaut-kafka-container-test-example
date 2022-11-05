@@ -1,0 +1,32 @@
+{
+  "type": "record",
+  "name": "DemoDocument",
+  "namespace": "com.krickert.avro.model",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "body",
+      "type": ["null","string"],
+      "required": false
+    },
+    {
+      "name": "custom",
+      "type": {
+        "type": "map",
+        "values": "string"
+      },
+      "required": false
+    }
+  ]
+}
+
+
