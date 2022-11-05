@@ -1,0 +1,14 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>com.krickert.search</groupId>
+  <artifactId>kafka-examples-pom</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+ 
+  <modules>
+    <module>kafka-container-test</module>
+    <module>kafka-avro-container-test</module>
+  </modules>
+</project>
