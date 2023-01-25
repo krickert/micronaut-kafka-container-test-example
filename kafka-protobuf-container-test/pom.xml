@@ -10,7 +10,7 @@
   <parent>
     <groupId>io.micronaut</groupId>
     <artifactId>micronaut-parent</artifactId>
-    <version>3.7.3</version>
+    <version>3.8.1</version>
     <relativePath/>
   </parent>
 
@@ -18,7 +18,7 @@
     <packaging>jar</packaging>
     <jdk.version>17</jdk.version>
     <release.version>17</release.version>
-    <micronaut.version>3.7.3</micronaut.version>
+    <micronaut.version>3.8.1</micronaut.version>
     <micronaut.test.resources.enabled>true</micronaut.test.resources.enabled>
     <exec.mainClass>kafka.container.test.KafkaAvroContainerTestCommand</exec.mainClass>
   </properties>
@@ -141,25 +141,42 @@
     <!-- https://mvnrepository.com/artifact/io.confluent/kafka-streams-protobuf-serde -->
     <dependency>
       <groupId>io.confluent</groupId>
-      <artifactId>kafka-streams-protobuf-serde</artifactId>
-      <version>7.2.2</version>
+        <artifactId>kafka-streams-protobuf-serde</artifactId>
+      <version>7.3.1</version>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>org.xolstice.maven.plugins</groupId>
-        <artifactId>protobuf-maven-plugin</artifactId>
-        <version>0.6.1</version>
+        <groupId>com.github.os72</groupId>
+        <artifactId>protoc-jar-maven-plugin</artifactId>
+        <version>3.11.4</version>
         <configuration>
-          <protocExecutable>/opt/homebrew/bin/protoc</protocExecutable>
+          <protocArtifact>com.google.protobuf:protoc:3.21.12</protocArtifact>
+          <addProtoSources>all</addProtoSources>
+          <includeMavenTypes>direct</includeMavenTypes>
+          <includeImports>true</includeImports>
+          <inputDirectories>
+            <include>src/main/protobuf</include>
+          </inputDirectories>
+          <outputTargets>
+            <outputTarget>
+              <type>java</type>
+              <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+            </outputTarget>
+            <outputTarget>
+              <type>grpc-java</type>
+              <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+              <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.52.1</pluginArtifact>
+            </outputTarget>
+          </outputTargets>
         </configuration>
         <executions>
           <execution>
+            <phase>generate-sources</phase>
             <goals>
-              <goal>compile</goal>
-              <goal>test-compile</goal>
+              <goal>run</goal>
             </goals>
           </execution>
         </executions>
